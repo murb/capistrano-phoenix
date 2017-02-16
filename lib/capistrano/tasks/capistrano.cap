@@ -42,7 +42,6 @@ namespace :phoenix do
   task :restart do
     on roles(fetch(:phoenix_role)), in: :sequence do
       within current_path  do
-
         if is_application_running?
           execute "rel/#{fetch(:application)}/bin/#{fetch(:application)}", "stop"
         end
@@ -52,8 +51,19 @@ namespace :phoenix do
   end
 end
 
+namespace :ecto do
+  task :migrate do
+    on roles(fetch(:phoenix_role)), in: :sequence do
+      within release_path do
+        execute :mix "&& MIX_ENV=#{fetch(:phoenix_mix_env)} mix ecto.migrate"
+      end
+    end
+  end
+end
+
 namespace :deploy do
   before "phoenix:build", "phoenix:build_assets"
   after :publishing, "phoenix:build"
+  after "phoenix:build", "ecto:migrate"
   after :published, "phoenix:restart"
 end
