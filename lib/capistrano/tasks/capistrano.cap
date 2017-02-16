@@ -55,7 +55,7 @@ namespace :ecto do
   task :migrate do
     on roles(fetch(:phoenix_role)), in: :sequence do
       within release_path do
-        execute :mix "&& MIX_ENV=#{fetch(:phoenix_mix_env)} mix ecto.migrate"
+        execute :mix, "&& MIX_ENV=#{fetch(:phoenix_mix_env)} mix ecto.migrate"
       end
     end
   end
