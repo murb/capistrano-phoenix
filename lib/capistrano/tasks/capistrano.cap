@@ -33,7 +33,7 @@ namespace :phoenix do
   task :build do
     on roles(fetch(:phoenix_role)), in: :sequence do
       within release_path  do
-        execute :mix, "&& MIX_ENV=#{fetch(:phoenix_mix_env)} mix do deps.get, compile && MIX_ENV=#{fetch(:phoenix_mix_env)} mix phoenix.digest && MIX_ENV=#{fetch(:phoenix_mix_env)} mix release"
+        execute "MIX_ENV=#{fetch(:phoenix_mix_env)} mix do deps.get, compile && MIX_ENV=#{fetch(:phoenix_mix_env)} mix phoenix.digest && MIX_ENV=#{fetch(:phoenix_mix_env)} mix release"
       end
     end
   end
@@ -45,7 +45,7 @@ namespace :phoenix do
         if is_application_running?
           execute "rel/#{fetch(:application)}/bin/#{fetch(:application)}", "stop"
         end
-        execute "rel/#{fetch(:application)}/bin/#{fetch(:application)}", "start -detached"
+        execute "rel/#{fetch(:application)}/bin/#{fetch(:application)}", "start"
       end
     end
   end
@@ -55,7 +55,7 @@ namespace :ecto do
   task :migrate do
     on roles(fetch(:phoenix_role)), in: :sequence do
       within release_path do
-        execute :mix, "&& MIX_ENV=#{fetch(:phoenix_mix_env)} mix ecto.migrate"
+        execute "MIX_ENV=#{fetch(:phoenix_mix_env)} mix ecto.migrate"
       end
     end
   end
