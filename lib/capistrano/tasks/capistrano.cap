@@ -44,6 +44,7 @@ namespace :phoenix do
       within current_path  do
         if is_application_running?
           execute "rel/#{fetch(:application)}/bin/#{fetch(:application)}", "stop"
+          sleep(6)
         end
         execute "rel/#{fetch(:application)}/bin/#{fetch(:application)}", "start"
       end
